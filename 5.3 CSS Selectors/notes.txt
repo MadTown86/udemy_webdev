@@ -1,0 +1,40 @@
+Syntax for CSS to style different elements
+
+
+ELEMENT SELECTOR:
+element {
+    attribute: value
+}
+
+This one will alter the attribute for all of the <html> elements.  <h2> or <p> 
+It is indiscriminate
+
+CLASS SELECTOR:
+.red-heading {
+    color: red
+}
+
+This can be used to alter an attribute on many different elements
+
+ID SELECTOR:
+#main {
+    attribute: value
+}
+
+This one alters said attribute's value for all elements that have id=#main
+
+*When to use, the ID should be something completely unique, not used to ID and 'tag'
+a bunch of different elements.
+
+Choosing ELEMENTS WITH A SPECIFIC VALUE Syntax
+
+all paragraphs that have said attribute are color red
+p[attribute] {
+    color: red
+}
+
+example: - only paragraphs that are draggable=True
+
+p[draggable] {
+    color: red
+}

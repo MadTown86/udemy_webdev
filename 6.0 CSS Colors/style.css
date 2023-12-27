@@ -1,0 +1,16 @@
+ol {
+  margin-left: -40px;
+  margin-top: -20px;
+  list-style-position: inside;
+}
+
+h1 {
+  color: whitesmoke;
+  background-color: darkseagreen;
+}
+
+h2 {
+  color: #FAF8F1;
+  background-color: #C58940;
+}
+/* Write your CSS below, don't change the rules above. */

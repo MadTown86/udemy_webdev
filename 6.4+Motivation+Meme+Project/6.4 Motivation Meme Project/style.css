@@ -1,0 +1,30 @@
+body {
+    background-color: #283739;
+}
+
+div[name="image"] {
+    color: #F5F5F5;
+    background-color: #2C5D63;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 10px;
+}
+
+div[name="phrase"] {
+    color: #F5F5F5;
+    background-color: #2C5D63;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 10px;
+}
+
+div[name="follow_up"] {
+    color: #F5F5F5;
+    background-color: #2C5D63;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 10px;
+}

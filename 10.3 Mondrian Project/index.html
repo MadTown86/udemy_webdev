@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mondrian Project</title>
+  <style>
+    /* 
+    Write your CSS here 
+    Gap Colour: #000
+    White: #F0F1EC
+    Red: #E72F24
+    Black: #232629
+    Blue: #004592
+    Yellow: #F9D01E
+
+    For dimensions, see dimensions.png image.
+    HINT: Remember you can't change the properties of grid lines.
+    But grid lines are transparent!
+    */
+
+    .container {
+      display: grid;
+      height: 100vh;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+    }
+
+    div {
+      border-style: solid;
+      border-width: 5px;
+      border-color: black;
+    }
+
+    div[color="white"] {
+      background-color: #F0F1EC;
+    }
+
+    div[color="red"] {
+      background-color: #E72F24;
+    }
+
+    div[color="blue"] {
+      background-color: #004592;
+    }
+
+    div[color="yellow"] {
+      background-color: #F9D01E;
+    }
+
+    div[color="black"] {
+      background-color: #232629;
+    }
+
+    .item1 {
+      grid-area: 1 / 1 / 1 / 3;
+    }
+
+    .item2 {
+      grid-area: 1 / 3 / 1 / 6;
+    }
+
+    .item3 {
+      grid-area: 1 / 6/ 1 / 8;
+    }
+
+    .item4 {
+      grid-area: 1 / 8 / 7 / 9;
+    }
+
+    .item5 {
+      grid-area: 7 / 8 / 9 / 9;
+    }
+
+    .item6 {
+      grid-area: 7 / 6 / 9 / 8;
+    }
+
+    .item7 {
+      grid-area: 6 / 6 / 7/ 8;
+    }
+
+    .item8 {
+      grid-area: 4/7/6/8;
+    }
+
+    .item9 {
+      grid-area: 4/6/6/7;
+    }
+
+    .item10 {
+      grid-area: 2/6/4/8
+    }
+
+    .item11 {
+      grid-area: 8/2/9/4;
+    }
+
+    .item12 {
+      grid-area: 7/2/8/4;
+    }
+
+    .item13 {
+      grid-area: 6/2/7/4;
+    }
+
+    .item14 {
+      grid-area: 7/1/9/2;
+    }
+    
+    .item15 {
+      grid-area: 2/1/7/2;
+    }
+
+    .item16 {
+      grid-area: 2/2/6/6;
+    }
+
+    .item17 {
+      grid-area: 6/4/7/6;
+    }
+
+    .item18 {
+      grid-area: 7/4/8/6;
+    }
+
+    .item19 {
+      grid-area: 8/4/9/6;
+    }
+  </style>
+</head>
+  <div class="container">
+    <div class="item1" color="white"></div>
+    <div class="item2"color="white"></div>
+    <div class="item3" color="yellow"></div>
+    <div class="item4" color="white"></div>
+    <div class="item5" color="red"></div>
+    <div class="item6" color="blue"></div>
+    <div class="item7" color="white"></div>
+    <div class="item8" color="white"></div>
+    <div class="item9" color="white"></div>
+    <div class="item10" color="yellow"></div>
+    <div class="item11" color="white"></div>
+    <div class="item12" color="white"></div>
+    <div class="item13" color="black"></div>
+    <div class="item14" color="yellow"></div>
+    <div class="item15" color="white"></div>
+    <div class="item16" color="red"></div>
+    <div class="item17" color="white"></div>
+    <div class="item18" color="white"></div>
+    <div class="item19" color="black"></div>
+  </div>
+
+<body>
+  <!-- Write your HTML here -->
+</body>
+
+</html>

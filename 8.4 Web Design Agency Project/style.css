@@ -1,0 +1,102 @@
+  body {
+    font-family: "Poppins", sans-serif;
+    margin: 50px 50px 0 50px;
+    background-color: #faf9f6;
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+    min-width: 600px;
+    max-width: 1920px;
+  }
+
+  div.left.card {
+    float: left;
+    width: 50%;
+  }
+ 
+  div.right.card {
+    float:right;
+    width: 50%;
+
+  }
+
+  .main.logo {
+    width: 25%;
+  }
+
+  .main > h1 {
+    font-size: 4rem;
+    text-align: left;
+    width: 50%;
+  }
+
+  .left.card > .tile-image {
+    float: left;
+    height: 100%;
+    width: 50%;
+    padding: 20px
+  }
+
+  .right.card > .tile-image {
+    float: left;
+    height: 100%;
+    width: 50%;
+    padding: 20px
+  }
+
+  .left.card > p {
+    height: 100%;
+    width: 100%;
+  }
+
+  .right.card.p {
+    height: 100%;
+    width: 100%;
+  }
+
+  footer {
+    text-align: right;
+    color: midnightblue;
+  }
+
+  h1:hover {
+    color: goldenrod;
+    background: royalblue;
+    font-size: 250px;
+  }
+
+  @media (max-width: 600px) {
+  body {
+    margin: 10px 10px 0 10px;
+  }
+
+  .main > .logo {
+    width: 150px;
+    position:static;
+  }
+
+  .main > h1 {
+    font-size: 4rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .left.card > .tile-image {
+    width:100%;
+  }
+
+  .right.card > .tile-image {
+    width:100%;
+  }
+
+
+@media (hover: hover) {
+  h1:hover {
+    font-size:400px;
+    color: blue;
+    background: goldenrod;
+  }
+}
+
+}
+

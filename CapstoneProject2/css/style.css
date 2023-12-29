@@ -1,0 +1,7 @@
+.gradient-background {
+    background-color: linear-gradient(to right, #acb9ff, #aed1ff);
+}
+
+body {
+    background: linear-gradient(to right, #acb9ff, #aed1ff);
+}

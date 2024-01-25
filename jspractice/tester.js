@@ -1,12 +1,8 @@
-console.log("We got this far");
-
-function thisMilk (times) {
-    for (let i = times; i > 0; i--) {
-        console.log("Hello")
-    }
-    console.log("Hello") 
+function test(names) {
+    var lengthOf = names.length;
+    var randomNum = Math.floor(Math.random() * lengthOf);
+    console.log(names[randomNum])
+    return randomNum
 }
 
-
-
-thisMilk(10)
+test(['mathew', 'mark', 'luke', 'john'])

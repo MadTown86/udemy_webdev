@@ -1,0 +1,25 @@
+body {
+    height: 100%;
+    background-color: rgb(165, 191, 188);
+    width: 100%;
+    text-align: center;
+    text-justify: center;
+}
+
+.dicee {
+    margin-top: 10%;
+}
+
+.roll_btn {
+    height: 50px;
+    width: 100px;
+    border-radius: 50px;
+}
+
+button:hover {
+    background-color: rgb(173, 194, 214);
+}
+
+button:active {
+    background-color:rgb(182, 204, 223);
+}

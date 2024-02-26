@@ -1,3 +1,14 @@
 <footer>
+  <h1>EJS Tags</h1>
+  <% if (data[seconds] % 2 === 0) { %>
+    <% for (var i = 0; i < data[items].length; i++) { %>
+    <li>
+      <%= data[items][i] %>
+    </li>
+  <% } else { %>
+  <%= data[htmlContent]> %>
+  <% } %>
+    <% } %>
+  <p><em>This is some em text</em></p>
   <p>Copyright © from footer</p>
 </footer>

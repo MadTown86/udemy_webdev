@@ -1,8 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
+
+app.use(express.static(__dirname + "public"));
+
+var year = Date.getFullYear;
 
 //Step 3 - Make the styling show up.
 //Hint 1: CSS files are static files!
@@ -16,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   //Step 1 - Make the get route work and render the index.ejs file.
+  var firsthead = "Welcome to the Random Name Generator!";
+  res.render("index.ejs", { year: year, firsthead: firsthead });
 });
 
 app.post("/submit", (req, res) => {
@@ -26,6 +35,9 @@ app.post("/submit", (req, res) => {
   //scroll down to see the two arrays.
   //2. Send the index.ejs as a response and add the adjective and noun to the res.render
   //3. Test to make sure that the random words display in the h1 element in index.ejs
+  var fname = adj[Math.random(adj.length)];
+  var lname = noun[Math.random(noun.length)];
+  res.render("index.ejs", { year: year, fname: fname, lname: lname, firsthead: ""});
 });
 
 app.listen(port, () => {

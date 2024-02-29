@@ -12,6 +12,7 @@ let date = new Date();
 let year = date.getFullYear();
 
 app.use(express.static(__dirname + "\\public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
     res.render("index.ejs", { year: year });
@@ -23,9 +24,10 @@ app.post("/submit", (req, res) => {
         name: req.body.name,
         email: req.body.email,
         text: req.body.text,
+        year: year,
     };
     console.log(data);
-    res.render("contact.ejs", data)
+    res.render("index.ejs", data)
     });
 
 app.listen(port, () => {

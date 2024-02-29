@@ -1,0 +1,17 @@
+<%- include("partials/header.ejs")%>
+<div>
+    <h1>Write A Post</h1>
+<% if (locals.name && locals.email && locals.text) { %>
+  <p style="color:black">Thank you for your comment, <%= name %>. I will get back to you at <%= email %>.</p>
+  <p style="color:black">Your comments were: <%= text %></p>
+<% } else { %>
+  <p>Blog It Up</p>
+  <form action="/submit" method="POST">
+  <input name="name" type="text" class="feedback-input" placeholder="Name" />
+  <input name="email" type="text" class="feedback-input" placeholder="Email" />
+  <textarea name="text" class="feedback-input" placeholder="Comment"></textarea>
+  <input type="submit" value="SUBMIT" />
+</form>
+<% } %>
+</div>
+<%- include("partials/footer.ejs")%>

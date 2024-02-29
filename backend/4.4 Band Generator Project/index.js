@@ -3,13 +3,17 @@ import bodyParser from "body-parser";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
+console.log(__dirname);
 
 const app = express();
 const port = 3000;
 
-app.use(express.static(__dirname + "public"));
+app.use(express.static(__dirname + "\\public\\"));
 
-var year = Date.getFullYear;
+
+
+let date = new Date();
+let year = date.getFullYear();
 
 //Step 3 - Make the styling show up.
 //Hint 1: CSS files are static files!
@@ -35,9 +39,11 @@ app.post("/submit", (req, res) => {
   //scroll down to see the two arrays.
   //2. Send the index.ejs as a response and add the adjective and noun to the res.render
   //3. Test to make sure that the random words display in the h1 element in index.ejs
-  var fname = adj[Math.random(adj.length)];
-  var lname = noun[Math.random(noun.length)];
+  var fname = adj[Math.floor(Math.random() * adj.length)];
+  var lname = noun[Math.floor(Math.random() * noun.length)];
+  console.log (fname, lname)
   res.render("index.ejs", { year: year, fname: fname, lname: lname, firsthead: ""});
+  console.log(year);
 });
 
 app.listen(port, () => {

@@ -12,23 +12,27 @@ const recipeJSON =
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let recipe;
+
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", {recipe: recipe});
 });
 
 app.post("/recipe", (req, res) => {
-  if (req.body.choice === "chicken") {
-    console.log("chicken");
-    res.render("index.ejs", { recipe: JSON.parse(recipeJSON)[0] });
-  } else if (req.body.choice === "beef") {
-    console.log("beef");
-    res.render("index.ejs", { recipe: JSON.parse(recipeJSON)[1] });
-  } else if (req.body.choice === "fish") {
-    console.log("fish");
-    res.render("index.ejs", { recipe: JSON.parse(recipeJSON)[2] });
-  } else {
-    console.log("no recipe found");
+  switch (req.body.choice) {
+    case "chicken":
+      recipe = JSON.parse(recipeJSON)[0];
+      break;
+    case "beef":
+      recipe = JSON.parse(recipeJSON)[1];
+      break;
+    case "fish":
+      recipe = JSON.parse(recipeJSON)[2];
+      break;
+    default:
+      break;
   }
+  res.redirect("/");
   //Step 3: Write your code here to make this behave like the solution website.
   //Step 4: Add code to views/index.ejs to use the recieved recipe object.
 });

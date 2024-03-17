@@ -118,11 +118,17 @@
     <div class="container">
       <div class="response-area">
         <% if (locals.content) { %>
-        <p>    
-          <%= content %>
+         <% content.foreach((element) => { %> 
+        <p>
+          <ul>
+            <li><%= JSON.stringify(element.title.en) %></li>
+            <li><%= JSON.stringify(element.ageRating) %></li>
+            <li><%= JSON.stringify(element.favoritesCount) %></li>
+          </ul>    
         </p>
+        <% }); %>
         <p><h1>That'll Be FIVE BUCKS bayBEEE!</h1></p>
-        <% } else {%>
+        <% } else { %>
           <h2>Let's Find Some Anime Baybeeee!</h2></2>
         <% } %>
       </div>
@@ -131,20 +137,20 @@
           <div class="col">
             <div class="dropdown">
               <h4>Rating Filter</h4>
-              <select>  
-                <option value="blank" selected>Select Rating</option>
-                <option value="r18_rating">R18 - Rated</option>
-                <option value="r_rating">R - Rated</option>
-                <option value="pg_rating">PG - Rated</option>
-                <option value="g_rating">G - Rated</option>
+              <select id="rating" name="rating">  
+                <option type="text" value="blank" selected>Select Rating</option>
+                <option type="text" value="R18">R18 - Rated</option>
+                <option type="text" value="R">R - Rated</option>
+                <option type="text" value="PG">PG - Rated</option>
+                <option type="text" value="G">G - Rated</option>
               </select>
             </div>
           </div>
           <div class="col">
             <h4>Sort By Favorite Count</h4>
-            <select>  
-              <option value="fc_false" selected>False</option>
-              <option value="fc_true">True</option>
+            <select name="favcount">  
+              <option id="favoriteCount" value="True" selected>False</option>
+              <option id="ageRating" value="False">True</option>
             </select>
           </div>
         </div>

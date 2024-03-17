@@ -23,42 +23,54 @@ const defaultHeaders = {
 
 
 
-app.get("/", async (req, res) => {
+app.get("/", async (req, res) => { 
   res.render("index.ejs");
 }
 );
 
-// app.get("/search", (req, res) => {
-//     console.log(req.body);
-// //     if req.
-// //   const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${query}`, {
-// //     headers: defaultHeaders
-// //   });
-// //   res.json(response.data);
-// });
 
 app.post("/search", async (req, res) => {
-    const query = req.body.search;
-    console.log(query);
-    const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${query}`, {
-      headers: defaultHeaders
-    });
-    console.log(res.json(response.data));
-    res.render("index.ejs", {content: response.data});
+    console.log(req.body);
+    console.log(req.body.rating);
+    if (req.body.rating != "blank") {
+        switch (req.body.favcount) {
+                case "False": 
+                    try {
+                        const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${req.body.rating}`, {
+                        headers: defaultHeaders
+                    })
+                    res.render("index.ejs", { content: response.data });
+                    break;
+                    } catch (error) {
+                        console.error(error);
+                    }
+                    
+                    
+                case "True":
+                    try {
+                        const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${req.body.rating}&sort=-favoritesCount`, {
+                        headers: defaultHeaders
+                    })
+                    res.render("index.ejs", { content: response.data });
+                    break;
+                    } catch (error) {
+                        console.error(error);
+                    }
+
     }
-    );
-  
-//3. GET a jokes by filtering on the joke type
+    } else {
+        try {
+            const response = await axios.get(`${baseUrl}/anime?`, {
+            headers: defaultHeaders
+        })
+        console.log(JSON.stringify(response.data));
+        res.render("index.ejs", { content: response.data });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+});
 
-//4. POST a new joke
-
-//5. PUT a joke
-
-//6. PATCH a joke
-
-//7. DELETE Specific joke
-
-//8. DELETE All jokes
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);

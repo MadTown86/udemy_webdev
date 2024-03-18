@@ -1,5 +1,12 @@
 import express from "express";
 import bodyParser from "body-parser";
+import axios from "axios";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+console.log(__dirname);
+
+app.use(express.static(__dirname + "\\public\\"));
 
 const app = express();
 const port = 3000;
@@ -9,8 +16,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //1. GET a random joke
 
+app.get("/random", (req, res) => {
+  let randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+  res.render("index.ejs", { content: randomJoke });
+});
 //2. GET a specific joke
-
+app.get("/jokes/:id", )
+  
 //3. GET a jokes by filtering on the joke type
 
 //4. POST a new joke

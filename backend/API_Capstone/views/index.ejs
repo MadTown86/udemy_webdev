@@ -118,9 +118,32 @@
     <div class="container">
       <div class="response-area">
         <% if (locals.content) { %>
-        <p>    
-          <%= content %>
+          <!-- <p>
+            <%= JSON.stringify(content) %>
+          </p> -->
+          
+         <% content.forEach(element => { %>
+          <hr>
+        <p>
+          <h5>Title</h5>
+          <p></p>    
+          <%= `English: ${JSON.stringify(element.attributes.titles.en)}` %>
+          <%= `English_Japanese: ${JSON.stringify(element.attributes.titles.en_jp)}` %>
+          <%= `Japanese: ${JSON.stringify(element.attributes.titles.ja_jp)}` %>
         </p>
+        <p>
+          <h5>ID</h5>
+          <%= JSON.stringify(element.id) %>
+        </p>
+        <p>
+          <h5>Synopsis</h5>
+          <%= `${JSON.stringify(element.attributes.synopsis)}` %>
+        </p>
+        <p>
+          <h5>Episode Count</h5>
+          <%= `${JSON.stringify(element.attributes.episodeCount)}` %>
+        </p>
+        <% }); %>
         <p><h1>That'll Be FIVE BUCKS bayBEEE!</h1></p>
         <% } else {%>
           <h2>Let's Find Some Anime Baybeeee!</h2></2>
@@ -131,22 +154,29 @@
           <div class="col">
             <div class="dropdown">
               <h4>Rating Filter</h4>
-              <select>  
-                <option value="blank" selected>Select Rating</option>
-                <option value="r18_rating">R18 - Rated</option>
-                <option value="r_rating">R - Rated</option>
-                <option value="pg_rating">PG - Rated</option>
-                <option value="g_rating">G - Rated</option>
+              <select name="rating">  
+                <option name="rating" value="blank" selected>Select Rating</option>
+                <option name="rating" value="R18">R18 - Rated</option>
+                <option name="rating" value="R">R - Rated</option>
+                <option name="rating" value="PG">PG - Rated</option>
+                <option name="rating" value="G">G - Rated</option>
               </select>
             </div>
           </div>
           <div class="col">
             <h4>Sort By Favorite Count</h4>
-            <select>  
-              <option value="fc_false" selected>False</option>
-              <option value="fc_true">True</option>
+            <select name="sort">  
+              <option value="False" selected>False</option>
+              <option value="True">True</option>
             </select>
           </div>
+        </div>
+        <div class="col mb-3">
+          <h4>Sort By Episode Count</h4>
+          <select name="episode_sort">
+            <option value="False" selected>False</option>
+            <option value="True">True</option>
+          </select>
         </div>
 
         <label for="submit">GET NEW ANIME</label>

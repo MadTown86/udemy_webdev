@@ -24,41 +24,82 @@ const defaultHeaders = {
 
 
 app.get("/", async (req, res) => {
+  const response = await axios.get(`${baseUrl}/anime?`, {
+    headers: defaultHeaders
+  });
   res.render("index.ejs");
 }
 );
 
-// app.get("/search", (req, res) => {
-//     console.log(req.body);
-// //     if req.
-// //   const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${query}`, {
-// //     headers: defaultHeaders
-// //   });
-// //   res.json(response.data);
-// });
 
 app.post("/search", async (req, res) => {
-    const query = req.body.search;
-    console.log(query);
-    const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${query}`, {
-      headers: defaultHeaders
-    });
-    console.log(res.json(response.data));
-    res.render("index.ejs", {content: response.data});
+    var rating = req.body.rating;
+    var sort = req.body.sort;
+    var episodesort = req.body.episodesort
+    try {
+    if (episodesort === "False") {
+    switch(sort) {
+      case "True":
+        switch(rating) {
+          case "G":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=G&sort=-favoritesCount`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "PG":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=PG&sort=-favoritesCount`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "R":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=R&sort=-favoritesCount`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "R18":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=R18&sort=-favoritesCount`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          default:
+            var response = await axios.get(`${baseUrl}/anime?sort=-favoritesCount`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+        } 
+        break;
+      case "False":
+        switch(rating) {
+          case "G":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=G`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "PG":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=PG`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "R":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=R`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          case "R18":
+            var response = await axios.get(`${baseUrl}/anime?filter[ageRating]=R18`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+          default:
+            var response = await axios.get(`${baseUrl}/anime?`, {});
+            res.render("index.ejs", {content: response.data.data});
+            break;
+        }
+        break;
+      default:
+        var response = await axios.get(`${baseUrl}/anime?`, {});
+        res.render("index.ejs", {content: response.data.data});
+        break;
+    }} else {
+      var response = await axios.get(`${baseUrl}/anime?sort=-episodeCount`, {});
+      res.render("index.ejs", {content: response.data.data});
     }
-    );
-  
-//3. GET a jokes by filtering on the joke type
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-//4. POST a new joke
-
-//5. PUT a joke
-
-//6. PATCH a joke
-
-//7. DELETE Specific joke
-
-//8. DELETE All jokes
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);

@@ -23,63 +23,16 @@ const defaultHeaders = {
 
 
 
-<<<<<<< HEAD
-app.get("/", async (req, res) => { 
-=======
 app.get("/", async (req, res) => {
   const response = await axios.get(`${baseUrl}/anime?`, {
     headers: defaultHeaders
   });
->>>>>>> 3c1186d1a95199c305d4963b82e024c58214292b
   res.render("index.ejs");
 }
 );
 
 
 app.post("/search", async (req, res) => {
-<<<<<<< HEAD
-    console.log(req.body);
-    console.log(req.body.rating);
-    if (req.body.rating != "blank") {
-        switch (req.body.favcount) {
-                case "False": 
-                    try {
-                        const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${req.body.rating}`, {
-                        headers: defaultHeaders
-                    })
-                    res.render("index.ejs", { content: response.data });
-                    break;
-                    } catch (error) {
-                        console.error(error);
-                    }
-                    
-                    
-                case "True":
-                    try {
-                        const response = await axios.get(`${baseUrl}/anime?filter[ageRating]=${req.body.rating}&sort=-favoritesCount`, {
-                        headers: defaultHeaders
-                    })
-                    res.render("index.ejs", { content: response.data });
-                    break;
-                    } catch (error) {
-                        console.error(error);
-                    }
-
-    }
-    } else {
-        try {
-            const response = await axios.get(`${baseUrl}/anime?`, {
-            headers: defaultHeaders
-        })
-        console.log(JSON.stringify(response.data));
-        res.render("index.ejs", { content: response.data });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-});
-
-=======
     var rating = req.body.rating;
     var sort = req.body.sort;
     var episodesort = req.body.episode_sort
@@ -118,7 +71,6 @@ app.post("/search", async (req, res) => {
 });
 
 
->>>>>>> 3c1186d1a95199c305d4963b82e024c58214292b
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);

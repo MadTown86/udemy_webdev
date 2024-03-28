@@ -23,13 +23,21 @@ const defaultHeaders = {
 
 
 
+<<<<<<< HEAD
 app.get("/", async (req, res) => { 
+=======
+app.get("/", async (req, res) => {
+  const response = await axios.get(`${baseUrl}/anime?`, {
+    headers: defaultHeaders
+  });
+>>>>>>> 3c1186d1a95199c305d4963b82e024c58214292b
   res.render("index.ejs");
 }
 );
 
 
 app.post("/search", async (req, res) => {
+<<<<<<< HEAD
     console.log(req.body);
     console.log(req.body.rating);
     if (req.body.rating != "blank") {
@@ -71,6 +79,46 @@ app.post("/search", async (req, res) => {
     }
 });
 
+=======
+    var rating = req.body.rating;
+    var sort = req.body.sort;
+    var episodesort = req.body.episode_sort
+    var status = req.body.status;
+    var subtype = req.body.subtype;
+
+    var get_message = `${baseUrl}/anime?`;
+    var sub_message = [];
+
+    try {
+      if (rating != "") {
+        sub_message.push(`filter[ageRating]=${rating}`);
+      }
+      if (status != "") {
+        sub_message.push(`filter[status]=${status}`);
+      }
+      if (subtype != "") {
+        sub_message.push(`filter[subtype]=${subtype}`);
+      }
+      if (sort != "") {
+        sub_message.push(`sort=${sort}`);
+      }
+      if (episodesort != "") {
+        sub_message.push(`sort=${episodesort}`);
+      }
+      get_message += sub_message.join("&");
+      let response = await axios.get(get_message, {
+        headers: defaultHeaders
+      });
+    
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(response.data.data[1])
+  console.log(response.data.links)
+});
+
+
+>>>>>>> 3c1186d1a95199c305d4963b82e024c58214292b
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);

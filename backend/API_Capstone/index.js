@@ -33,6 +33,7 @@ app.get("/", async (req, res) => {
 
 
 app.post("/search", async (req, res) => {
+  console.log(req.body);
     var rating = req.body.rating;
     var sort = req.body.sort;
     var episodesort = req.body.episode_sort
@@ -41,33 +42,67 @@ app.post("/search", async (req, res) => {
 
     var get_message = `${baseUrl}/anime?`;
     var sub_message = [];
+    var filtered = false;
+    var sorted = false;
 
     try {
+
       if (rating != "") {
+        filtered = true;
         sub_message.push(`filter[ageRating]=${rating}`);
       }
+
       if (status != "") {
+        if (filtered == true) {
+          sub_message.push(`filter[status]=${status}`);
+        } else {
+        filtered = true
         sub_message.push(`filter[status]=${status}`);
+        }
       }
+
       if (subtype != "") {
-        sub_message.push(`filter[subtype]=${subtype}`);
+        if (filtered == true) {
+          sub_message.push(`filter[subtype]=${subtype}`);
+        } else {
+          filtered = true
+          sub_message.push(`filter[subtype]=${subtype}`);
+        }
       }
-      if (sort != "") {
+
+      if (sort != "False") {
+        sorted = true;
         sub_message.push(`sort=${sort}`);
       }
-      if (episodesort != "") {
-        sub_message.push(`sort=${episodesort}`);
+
+      if (episodesort != "False") {
+        if (sorted == true) {
+          sub_message.push(`sort=${episodesort}`);
+        } else {
+          sorted = true;
+          sub_message.push(`sort=${episodesort}`);
+        }
       }
+
       get_message += sub_message.join("&");
+
+      console.log(`This is the message sent with axios: ${get_message}`)
       let response = await axios.get(get_message, {
         headers: defaultHeaders
       });
+
+      if (!response) {
+        console.log("Crappy Crap")
+      } else {
+        res.render("index.ejs", {data: response.data.data});
+        console.log(response.data.data[1])
+        console.log(response.data.links)
+      }
     
   } catch (error) {
     console.log(error);
   }
-  console.log(response.data.data[1])
-  console.log(response.data.links)
+
 });
 
 

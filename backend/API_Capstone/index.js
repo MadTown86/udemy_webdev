@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import axios from "axios";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 
@@ -41,6 +42,7 @@ app.post("/search", async (req, res) => {
 
     var get_message = `${baseUrl}/anime?`;
     var sub_message = [];
+    const file_location = `D:\\DEVELOPER_FILES\\REPOSITORIES\\udemy_webdev\\udemy_webdev\\backend\\API_Capstone\\sampletext.txt`;
 
     try {
       if (rating != "") {
@@ -52,22 +54,32 @@ app.post("/search", async (req, res) => {
       if (subtype != "") {
         sub_message.push(`filter[subtype]=${subtype}`);
       }
-      if (sort != "") {
+      if (sort == "True") {
         sub_message.push(`sort=${sort}`);
       }
-      if (episodesort != "") {
+
+      if (episodesort == "True" && sort == "False") {
         sub_message.push(`sort=${episodesort}`);
       }
-      get_message += sub_message.join("&");
-      const response = await axios.get(get_message, {
+        get_message += sub_message.join("&");
+        console.log(get_message);
+        const response = await axios.get(get_message, {
         headers: defaultHeaders
-      });
+      })
+        console.log(response.data.data[1]);
+        console.log(response.data.links);
+        var myJson = JSON.stringify(response.data,null,2);
+        console.log(myJson);
+        fs.writeFile("sampletext.json", myJson, function(err) {
+        if (err) {
+        console.log(err);
+        }
+        });
+        res.render("index.ejs", { content: response.data.data, links: response.data.links });
     
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
-  console.log(response.data.data[1])
-  console.log(response.data.links)
 });
 
 

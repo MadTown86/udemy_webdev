@@ -28,12 +28,27 @@
           <h5>Episode Count</h5>
           <%= `${JSON.stringify(element.attributes.episodeCount)}` %>
         </p>
+        <p>
+          <h5>Rating</h5>
+          <%= `${JSON.stringify(element.attributes.ageRating)}` %>
+        </p>
+        <p>
+          <h5>Status</h5>
+          <%= `${JSON.stringify(element.attributes.status)}` %>
+        </p>
         <% }); %>
+        <% if (locals.links) { %>
+        <div>
+          <button id="prev" onclick="window.location.href = `<%= JSON.stringify(links.next) %>`;">Prev</button>
+        </div>
+        <% } else { %>
         <p><h1>That'll Be FIVE BUCKS bayBEEE!</h1></p>
+        <% } %>
         <% } else { %>
           <h2>Let's Find Some Anime Baybeeee!</h2></2>
         <% } %>
       </div>
+
 
       <!-- Filters Section -->
       <h3 class="row-12">Filter Section</h3>

@@ -6,22 +6,27 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 
-app.use(express.static(__dirname + "\\public\\"));
+
 
 const app = express();
 const port = 3000;
 const masterKey = "4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT";
 
+app.use(express.static(__dirname + "\\public\\"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //1. GET a random joke
 
-app.get("/random", (req, res) => {
+app.get("/", (req, res) => {
   let randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+  console.log(randomJoke);
   res.render("index.ejs", { content: randomJoke });
 });
 //2. GET a specific joke
-app.get("/jokes/:id", )
+app.get("/filter", (req, res) => {
+  let joke = jokes.find((joke) => joke.id == req.params.id);
+  res.render("index.ejs", { content: joke });
+});
   
 //3. GET a jokes by filtering on the joke type
 

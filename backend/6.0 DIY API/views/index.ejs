@@ -102,6 +102,14 @@
       #delete:hover {
         background-color: #c0392b;
       }
+
+      #deleteall {
+        background-color: #f80505;
+      }
+
+      #deleteall:hover {
+        background-color: #d65959;
+      }
     </style>
   </head>
   
@@ -109,27 +117,36 @@
     <div class="container">
       <div class="response-area">
         <% if (locals.content) { %>
-        <p>    
-          <%= content %>
-        </p>
-        <% } else {}%>
+          <% for (const [key, value] of Object.entries(content)) { %>
+            <hr>
+            <p>
+              <h5><%= key %></h5>
+              <%= value %>
+            </p>
+
+          <% }; %>
+          <p>
+            <%= JSON.stringify(content,null,2) %>
+          </p>
+        <% } %>
       </div>
       <form id="myForm" method="post">
         <label for="idInput">Id:</label>
-        <input type="text" id="idInput" name="id">
+        <input type="number" id="idInput" name="id_number">
   
-        <label for="secretInput">Secret:</label>
-        <input type="text" id="secretInput" name="secret">
+        <label for="jokeText">Joke Text:</label>
+        <input type="text" id="jokeText" name="jokeText">
   
-        <label for="scoreInput">Score:</label>
-        <input type="number" id="scoreInput" name="score">
+        <label for="type">Type:</label>
+        <input type="text" id="jokeType" name="jokeType">
   
         <label for="submit">Route:</label>
-        <input id="get" type="submit" value="GET" formaction="/get-secret">
-        <input id="post" type="submit" value="POST" formaction="/post-secret">
-        <input id="put" type="submit" value="PUT" formaction="/put-secret">
-        <input id="patch" type="submit" value="PATCH" formaction="/patch-secret">
-        <input id="delete" type="submit" value="DELETE" formaction="/delete-secret">
+        <input id="get" type="submit" value="GET" formaction="/jokes?filter[id]">
+        <input id="post" type="submit" value="POST" formaction="/post_joke">
+        <input id="put" type="submit" value="PUT" formaction="/replace_joke">
+        <input id="patch" type="submit" value="PATCH" formaction="/change_joke">
+        <input id="delete" type="submit" value="DELETE" formaction="/delete-joke">
+        <input id="deleteall" type="submit" value="DELETE ALL" formaction="/delete-all-jokes">
       </form>
 <body>
     

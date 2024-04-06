@@ -22,10 +22,14 @@ app.get("/", (req, res) => {
   console.log(randomJoke);
   res.render("index.ejs", { content: randomJoke });
 });
+
 //2. GET a specific joke
-app.get("/filter", (req, res) => {
-  let joke = jokes.find((joke) => joke.id == req.params.id);
-  res.render("index.ejs", { content: joke });
+app.get("/jokes/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  console.log(id.toString() );
+  // let joke = jokes.find((joke) => joke.id == req.params.id_number);
+  // console.log(joke);
+  // res.render("index.ejs", { content: joke });
 });
   
 //3. GET a jokes by filtering on the joke type

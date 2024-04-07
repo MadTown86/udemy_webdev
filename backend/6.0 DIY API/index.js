@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 
+var jokeTypeList = ["Puns", "Science", "Wordplay", "Math", "Food", "Sports", "Movies"];
 
 
 const app = express();
@@ -19,30 +20,98 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   let randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-  console.log(randomJoke);
-  res.render("index.ejs", { content: randomJoke });
+  if (randomJoke) {
+    var jokeDisplayList = [];
+    jokeDisplayList.push(randomJoke);
+    // console.log(randomJoke);
+    res.render("index.ejs", { content: jokeDisplayList, jokeTypeList: jokeTypeList});
+  } else {
+    res.render("index.ejs", { error: "No jokes found", jokeTypeList: jokeTypeList})
+  }
+  
 });
 
 //2. GET a specific joke
-app.get("/jokes/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  console.log(id.toString() );
-  // let joke = jokes.find((joke) => joke.id == req.params.id_number);
-  // console.log(joke);
-  // res.render("index.ejs", { content: joke });
+app.get("/jokes", (req, res) => {
+  if (req.query.id != "") {
+    const joke = jokes.find((joke) => joke.id == req.query.id);
+    if (joke) {
+      console.log(joke);
+      var jokeDisplayList = [];
+      jokeDisplayList.push(joke);
+      // console.log(joke);
+      res.render("index.ejs", { content: jokeDisplayList, jokeTypeList: jokeTypeList});
+    } else {
+      res.render("index.ejs", { error: "No joke found with that ID", jokeTypeList: jokeTypeList});
+    }
+   
+  } else if (req.query.jokeType != "") {
+    const joke = jokes.filter((joke) => joke.jokeType == req.query.jokeType);
+    // console.log(joke);
+    res.render("index.ejs", { content: joke, jokeTypeList: jokeTypeList});
+  } else {
+    res.send("Please provide a valid ID or jokeType");
+  }
 });
   
-//3. GET a jokes by filtering on the joke type
-
 //4. POST a new joke
+app.post("/jokes_post", (req, res) => {
+  let joke = {
+    id: jokes.length + 1,
+    jokeText: req.body.jokeText,
+    jokeType: req.body.jokeType,
+  };
+  jokes.push(joke);
+  res.render("index.ejs", { pushNote: `Joke added successfully! - ID: ${joke.id}`, jokeTypeList: jokeTypeList });
+});
 
 //5. PUT a joke
+app.post("/jokes_put", (req, res) => {
+  console.log(req);
+  console.log(`Replacing joke with ID: ${req.query.id}`)
+  const joke = jokes.find((joke) => joke.id == req.body.id);
+  console.log(joke);
+  if (joke) {
+    joke.jokeText = req.body.jokeText;
+    joke.jokeType = req.body.jokeType;
+    res.render("index.ejs", { pushNote: `Joke updated successfully! - ID: ${joke.id}`, jokeTypeList: jokeTypeList });
+  } else {
+    res.render("index.ejs", { error: "No joke found with that ID", jokeTypeList: jokeTypeList});
+  }
+});
 
 //6. PATCH a joke
+app.post("/jokes_patch", (req, res) => {
+  console.log(req);
+  const joke = jokes.find((joke) => joke.id == req.body.id);
+  console.log(`Updating joke with ID: ${req.body.id}`)
+  if (joke) {
+    joke.jokeText = req.body.jokeText;
+    joke.jokeType = req.body.jokeType;
+    res.render("index.ejs", { pushNote: `Joke updated successfully! - ID: ${joke.id}`, jokeTypeList: jokeTypeList });
+  } else {
+    res.render("index.ejs", { error: "No joke found with that ID", jokeTypeList: jokeTypeList});
+  }
+});
 
 //7. DELETE Specific joke
+app.post("/jokes_delete", (req, res) => {
+  let joke = jokes.find((joke) => joke.id == req.body.id);
+  console.log(`Deleting joke with ID: ${req.body.id}`)
+  if (joke) {
+    jokes = jokes.filter((joke) => joke.id != req.body.id);
+    res.render("index.ejs", { pushNote: `Joke deleted successfully! - ID: ${req.body.id}`, jokeTypeList: jokeTypeList });
+  } else {
+    res.render("index.ejs", { error: "No joke found with that ID", jokeTypeList: jokeTypeList});
+  }
+});
 
 //8. DELETE All jokes
+app.post("/jokes_nojoke", (req, res) => {
+  jokes = [];
+  res.render("index.ejs", { pushNote: `All jokes deleted successfully!`, jokeTypeList: jokeTypeList });
+});
+
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);

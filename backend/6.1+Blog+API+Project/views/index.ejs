@@ -31,6 +31,10 @@
         </li>
         <% }); %>
     </ul>
+    <form id="findPost" action="/posts/:id" method="post">
+      <input type="number" id="id" name="id">
+      <input id="get" type="submit" value="GET" formmethod="get" formaction="/posts/:id">
+    </form>
   </div>
 
 </body>

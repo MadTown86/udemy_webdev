@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 app.get("/", async (req, res) => {
   try {
     const response = await axios.get(`${API_URL}/posts`);
-    console.log(response);
     res.render("index.ejs", { posts: response.data });
   } catch (error) {
     res.status(500).json({ message: "Error fetching posts" });
@@ -30,7 +29,7 @@ app.get("/new", (req, res) => {
 app.get("/edit/:id", async (req, res) => {
   try {
     const response = await axios.get(`${API_URL}/posts/${req.params.id}`);
-    console.log(response.data);
+    console.log(`Edit Post Response \n ${'*' * 50} \n ${JSON.stringify(response.data)}`);
     res.render("modify.ejs", {
       heading: "Edit Post",
       submit: "Update Post",
@@ -41,11 +40,28 @@ app.get("/edit/:id", async (req, res) => {
   }
 });
 
+// Find a new post
+app.get("/posts/:id", async (req, res) => {
+  try {
+    if (!req.query.id) {
+      const response = await axios.get(`${API_URL}/posts`);
+      res.render("index.ejs", { posts: response.data });
+    } else {
+      const response = await axios.get(`${API_URL}/posts/${req.query.id}`);
+      res.render("index.ejs", { posts: [response.data] })
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching post" });
+  }
+}
+);
+
 // Create a new post
 app.post("/api/posts", async (req, res) => {
   try {
     const response = await axios.post(`${API_URL}/posts`, req.body);
-    console.log(response.data);
+    console.log(`Create Post Response \n ${'*' * 50} \n ${response.data}`);
     res.redirect("/");
   } catch (error) {
     res.status(500).json({ message: "Error creating post" });
@@ -55,6 +71,7 @@ app.post("/api/posts", async (req, res) => {
 // Partially update a post
 app.post("/api/posts/:id", async (req, res) => {
   console.log("called");
+  console.log(req.params.id);
   try {
     const response = await axios.patch(
       `${API_URL}/posts/${req.params.id}`,

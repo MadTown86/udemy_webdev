@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import pg from "pg";
 
 
-let dbUser = process.env.DB_USER;
-let dbPassword = process.env.DB_PASSWORD;
+let dbUser = process.env.DB_POSTGREUSER;
+let dbPassword = process.env.DB_POSTGREPASS;
 
 const app = express();
 const port = 3000;
@@ -14,7 +14,7 @@ const db = new pg.Client({
   password: dbPassword,
   host: "localhost",
   port: 5432,
-  database: "postgres",
+  database: "udemy",
 });
 
 db.connect();
@@ -25,7 +25,7 @@ let total = 0;
 db.query("SELECT country_code FROM countries_visited;", (err, res) => {
   if (err) {
     console.error("Error executing query", err.stack);
-  } else {
+  } else { 
     res.rows.forEach((row) => {
       countries.push(row.country_code);
     });
@@ -37,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
+  
   console.log(countries);
   console.log(total);
   res.render("index.ejs", { countries: countries, total: total });
@@ -44,11 +45,14 @@ app.get("/", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   let country = req.body.country;
+  total++;
+  console.log(country);
   let query = `INSERT INTO countries_visited (country_code) VALUES ('${country}');`;
   db.query(query, (err, res) => {
     if (err) {
       console.error("Error executing query", err.stack);
     }
+    console.log(res);
   });
   res.redirect("/");
 } );

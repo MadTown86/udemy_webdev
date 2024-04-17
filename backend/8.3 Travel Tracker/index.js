@@ -43,19 +43,44 @@ app.get("/", async (req, res) => {
   res.render("index.ejs", { countries: countries, total: total });
 });
 
+const db_client2 = new pg.Client({
+  user: dbUser,
+  password: dbPassword,
+  host: "localhost",
+  port: 5432,
+  database: "udemy",
+});
+
+let country_code = "blah";
 app.post("/add", async (req, res) => {
   let country = req.body.country;
-  total++;
-  console.log(country);
-  let query = `INSERT INTO countries_visited (country_code) VALUES ('${country}');`;
-  db.query(query, (err, res) => {
+  
+  db_client2.connect();
+  try {
+    const query_results = await db_client2.query(`SELECT country_code FROM countries_by_code WHERE country_name LIKE ('${country}');`);
+    console.log(query_results);
+    country_code = query_results.rows[0].country_code;
+    console.log(`Country code: ${country_code}`)
+  } catch (err) {
+    console.error("Error executing query", err.stack);
+  }
+  
+  console.log(country_code);
+  let query = `INSERT INTO countries_visited (country_code) VALUES ('${country_code}');`;
+  db_client2.query(query, (err, res) => {
     if (err) {
       console.error("Error executing query", err.stack);
     }
     console.log(res);
   });
-  res.redirect("/");
+  total++;
+  countries.push(country_code);
+  console.log(countries);
+  res.render("index.ejs", { countries: countries, total: total });
 } );
+
+db_client2.end();
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

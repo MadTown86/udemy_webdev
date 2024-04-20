@@ -2,84 +2,54 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 
-
+// DB LOGIN ELEMENTS
 let dbUser = process.env.DB_POSTGREUSER;
 let dbPassword = process.env.DB_POSTGREPASS;
 
 const app = express();
 const port = 3000;
 
-const db = new pg.Client({
-  user: dbUser,
-  password: dbPassword,
-  host: "localhost",
-  port: 5432,
-  database: "udemy",
-});
-
-db.connect();
-
-
-let countries = [];
-let total = 0;
-db.query("SELECT country_code FROM countries_visited;", (err, res) => {
-  if (err) {
-    console.error("Error executing query", err.stack);
-  } else { 
-    res.rows.forEach((row) => {
-      countries.push(row.country_code);
-    });
-    total = res.rowCount;
-  } 
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", async (req, res) => {
-  
-  console.log(countries);
-  console.log(total);
-  res.render("index.ejs", { countries: countries, total: total });
-});
-
-const db_client2 = new pg.Client({
-  user: dbUser,
-  password: dbPassword,
-  host: "localhost",
-  port: 5432,
-  database: "udemy",
-});
-
-let country_code = "blah";
-app.post("/add", async (req, res) => {
-  let country = req.body.country;
-  
-  db_client2.connect();
-  try {
-    const query_results = await db_client2.query(`SELECT country_code FROM countries_by_code WHERE country_name LIKE ('${country}');`);
-    console.log(query_results);
-    country_code = query_results.rows[0].country_code;
-    console.log(`Country code: ${country_code}`)
-  } catch (err) {
-    console.error("Error executing query", err.stack);
-  }
-  
-  console.log(country_code);
-  let query = `INSERT INTO countries_visited (country_code) VALUES ('${country_code}');`;
-  db_client2.query(query, (err, res) => {
-    if (err) {
-      console.error("Error executing query", err.stack);
-    }
-    console.log(res);
+const { Pool } = pg;
+const pool = new Pool({
+    user: dbUser,
+    password: dbPassword,
+    host: "localhost",
+    port: 5432,
+    database: "udemy",
   });
-  total++;
-  countries.push(country_code);
-  console.log(countries);
-  res.render("index.ejs", { countries: countries, total: total });
-} );
 
-db_client2.end();
+const client = await pool.connect();
+
+app.get("/", async (req, res) => {
+  const result = await client.query("SELECT country_code FROM countries_visited;");
+  let countries = [];
+  result.rows.forEach((country) => {
+    countries.push(country.country_code);
+  });
+  console.log(result.rows);
+  res.render("index.ejs", { countries: countries, total: countries.length });
+}
+);
+
+app.post("/add", async (req, res) => {
+  let client_text = req.body.country;
+  const result = await client.query(`SELECT * FROM countries_by_code WHERE SIMILARITY(country_name, '${client_text}' || '%') > 0.5;`);
+  if (result.rows.length> 1) {
+    console.log("Multiple countries found");
+  } else if (result.rows.length === 0) {
+    console.log("Country not found");
+  } else {
+    console.log("Country found");
+    let country_code = result.rows[0].country_code;
+    console.log(country_code);
+    await client.query(`INSERT INTO countries_visited (country_code) VALUES ('${country_code}');`);
+  }
+  res.redirect("/");
+});
+  
 
 
 app.listen(port, () => {

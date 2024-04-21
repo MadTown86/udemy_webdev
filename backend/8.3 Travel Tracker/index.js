@@ -23,32 +23,41 @@ const pool = new Pool({
 
 const client = await pool.connect();
 
-app.get("/", async (req, res) => {
+async function checkCountries() {
   const result = await client.query("SELECT country_code FROM countries_visited;");
   let countries = [];
   result.rows.forEach((country) => {
     countries.push(country.country_code);
   });
-  console.log(result.rows);
+  return countries;
+}
+
+
+app.get("/", async (req, res) => {
+  let countries = await checkCountries();
+  console.log(countries);
   res.render("index.ejs", { countries: countries, total: countries.length });
 }
 );
 
 app.post("/add", async (req, res) => {
   let client_text = req.body.country;
+  let countries = await checkCountries();
   const result = await client.query(`SELECT * FROM countries_by_code WHERE SIMILARITY(country_name, '${client_text}' || '%') > 0.5;`);
-  if (result.rows.length> 1) {
-    console.log("Multiple countries found");
+  if (result.rows.length > 1) {
+    res.render("index.ejs", { countries: countries, total: countries.length, error: "Too many countries found. Please try again." });
   } else if (result.rows.length === 0) {
-    console.log("Country not found");
+    res.render("index.ejs", { countries: countries, total: countries.length, error: "Country not found. Please try again." });
   } else {
-    console.log("Country found");
-    let country_code = result.rows[0].country_code;
-    console.log(country_code);
-    await client.query(`INSERT INTO countries_visited (country_code) VALUES ('${country_code}');`);
+    try {
+      await client.query(`INSERT INTO countries_visited (country_code) VALUES ('${result.rows[0].country_code}');`);
+      res.redirect("/");
+    } catch (err) {
+      res.render("index.ejs", { countries: countries, total: countries.length, error: "Country already in the list." });
   }
-  res.redirect("/");
-});
+}
+}
+);
   
 
 

@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+var time = Date.now();
 
 const app = express();
 const port = 3000;
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 
 // Route to render the main page
 app.get("/", async (req, res) => {
+  console.log("GET / from server.js  ::", Date.now());
   try {
     const response = await axios.get(`${API_URL}/posts`);  
     res.render("index.ejs", { posts: response.data });
@@ -23,10 +25,12 @@ app.get("/", async (req, res) => {
 
 // Route to render the edit page
 app.get("/new", (req, res) => {
+  console.log("GET /NEW from server.js  ::", Date.now());
   res.render("modify.ejs", { heading: "New Post", submit: "Create Post" });
 });
 
 app.get("/edit/:id", async (req, res) => {
+  console.log("GET /EDIT/:id from server.js  ::", Date.now());
   try {
     const response = await axios.get(`${API_URL}/posts/${req.params.id}`);
     console.log(`Edit Post Response \n ${'*' * 50} \n ${JSON.stringify(response.data)}`);
@@ -38,10 +42,12 @@ app.get("/edit/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error fetching post" });
   }
+  res.redirect("/");
 });
 
 // Find a new post
 app.get("/posts/:id", async (req, res) => {
+  console.log("GET /POSTS/:id from server.js  ::", Date.now());
   try {
     if (!req.query.id) {
       const response = await axios.get(`${API_URL}/posts`);
@@ -59,6 +65,7 @@ app.get("/posts/:id", async (req, res) => {
 
 // Create a new post
 app.post("/api/posts", async (req, res) => {
+  console.log("POST /POSTS from server.js  ::", Date.now());
   try {
     const response = await axios.post(`${API_URL}/posts`, req.body);
     console.log(`Create Post Response \n ${'*' * 50} \n ${response.data}`);
@@ -70,6 +77,7 @@ app.post("/api/posts", async (req, res) => {
 
 // Partially update a post
 app.post("/api/posts/:id", async (req, res) => {
+  console.log("PATCH /POSTS/:id from server.js  ::", Date.now());
   console.log("called");
   console.log(req.params.id);
   try {
@@ -86,6 +94,7 @@ app.post("/api/posts/:id", async (req, res) => {
 
 // Delete a post
 app.get("/api/posts/delete/:id", async (req, res) => {
+  console.log("DELETE /POSTS/:id from server.js  ::", Date.now());
   try {
     await axios.delete(`${API_URL}/posts/${req.params.id}`);
     res.redirect("/");

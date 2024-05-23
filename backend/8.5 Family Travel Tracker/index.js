@@ -26,7 +26,7 @@ let currentUserId = 1;
 
 let users = [];
 
-async function checkVisisted() {
+async function checkVisited() {
   const result = await client.query("SELECT country_code FROM countries_visited JOIN users ON users.id = user_id WHERE user_id = $1;", [currentUserId]);
   let countries = [];
   result.rows.forEach((country) => {
@@ -42,7 +42,7 @@ async function getUsers() {
 }
 
 app.get("/", async (req, res) => {
-  const countries = await checkVisisted();
+  const countries = await checkVisited();
   const currentUser = await getUsers();
   res.render("index.ejs", {
     countries: countries,
